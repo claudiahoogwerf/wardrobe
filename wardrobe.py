@@ -6,18 +6,19 @@ class Material(Enum):
         GLASS = 'Glass'
 
 class Wardrobe():
-    def __init__(self,name='',material=Material.WOOD):
+    def __init__(self,name='',material=Material.WOOD,location='Middle of nowhere'):
         self.name = name
         if isinstance(material,Material):
-            self._material = material # wood carbonfiber glass
+            self.material = material # wood carbonfiber glass
         else:
             raise TypeError("Input must be a material")
-        self._closed = True
-        self._in_wardrobe = False
+        self.closed = True
+        self.in_wardrobe = False
         self.broken = False
+        self.location = location
 
     def __str__(self):
-        return self._name + ' ' + self._material.value + ' '  + str(self._closed)
+        return self.name + ' ' + self.material.value + ' '  + str(self.closed)
 
     @property
     def name(self):
@@ -35,71 +36,106 @@ class Wardrobe():
     def broken(self,broken):
         self._broken = broken
 
+    @property
+    def closed(self):
+        return self._closed
+
+    @closed.setter
+    def closed(self,closed):
+        self._closed = closed
+
+    @property
+    def in_wardrobe(self):
+        return self._in_wardrobe
+
+    @in_wardrobe.setter
+    def in_wardrobe(self,in_wardrobe):
+        self._in_wardrobe = in_wardrobe
+
+    @property
+    def location(self):
+        return self._location
+
+    @location.setter
+    def location(self,location):
+        self._location = location
+
+    @property
+    def material(self):
+        return self._material
+
+    @material.setter
+    def material(self,material):
+        self._material = material
+
     def open(self):
-        if self._broken:
+        if self.broken:
             return "You already broke it dumbass! It's useless now"
 
-        if not self._closed:
+        if not self.closed:
             return 'Door is already opened'
 
-        self._closed = False
+        self.closed = False
         return 'Opened the door'
 
     def close(self):
-        if self._broken:
+        if self.broken:
             return "You already broke it dumbass! It's useless now"
 
-        if not self._closed == True:
+        if not self.closed == True:
             return 'Door is already closed'
 
-        self._closed = True
+        self.closed = True
         return 'Closed the door'
 
     def get_in(self):
-        if self._broken:
+        if self.broken:
             return "You already broke it dumbass! It's useless now"
 
-        if self._in_wardrobe:
+        if self.closed:
+            return "Open the door first"
+
+        if self.in_wardrobe:
             return 'You are already in the closet'
 
-        self._in_wardrobe = True
+        self.in_wardrobe = True
         return "You've got in the closet. Now what?"
 
     def get_out(self):
-        if not self._in_wardrobe:
+        if not self.in_wardrobe:
             return "You were already out of the closet."
 
-        self._in_wardrobe = False
+        self.in_wardrobe = False
         return "You've escaped out of the closet!"
 
     def kick(self):
-        if self._in_wardrobe:
+        if self.in_wardrobe:
             return "Not enough room to kick it! Get out first"
 
-        if self._material == Material.GLASS:
+        if self.material == Material.GLASS:
             self.broken = True
             return "You broke the closet!"
-        elif self._material == Material.CARBONFIBER:
+        elif self.material == Material.CARBONFIBER:
             return 'A little damaged, but not broken.'
 
         return "Whatever! Nothing happened"
 
 
 class Lion():
-    def __init__(self,name=''):
+    def __init__(self,spoken_to=False):
         #Course labels.
-        self.name = name
+        self.spoken_to = spoken_to
 
     def __str__(self):
-        return self._name
+        return self.spoken_to
 
     @property
-    def name(self):
-        return self._name
+    def spoken_to(self):
+        return self._spoken_to
 
-    @name.setter
-    def name(self,name):
-        self._name = name
+    @spoken_to.setter
+    def spoken_to(self,spoken_to):
+        self._spoken_to = spoken_to
 
 class Witch():
     def __init__(self,name=''):
