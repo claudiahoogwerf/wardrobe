@@ -1,8 +1,7 @@
 import unittest
-from wardrobe import Wardrobe
-import logging
+from wardrobe import Wardrobe, Material, Witch, Lion
 
-class WardRobeTest(unittest.TestCase):
+class WardrobeTest(unittest.TestCase):
     """Wardrobe class
 
     Test the functions of the wardrobe.
@@ -11,21 +10,32 @@ class WardRobeTest(unittest.TestCase):
 
     def setUp(self):
         """Setup the test environment."""
-        glass_wardrobe = Wardrobe('my glass wardrobe',Material.GLASS)
-        wooden_wardrobe = Wardrobe('my wooden wardrobe',Material.WOOD)
-        carbonfiber_wardrobe = Wardrobe('my carbon wardrobe',Material.CARBONFIBER)
+        self.glass_wardrobe = Wardrobe('my glass wardrobe',Material.GLASS)
+        self.wooden_wardrobe = Wardrobe('my wooden wardrobe',Material.WOOD)
+        self.carbonfiber_wardrobe = Wardrobe('my carbon wardrobe',Material.CARBONFIBER)
 
-    def rename_wardrobe(self):
+    def test_rename_wardrobe(self):
         """Test renaming of the wardrobe.
         """
         newname = 'my carbonfiber wardrobe'
-        carbonfiber_wardrobe.name(newname)
-        self.assertEquals(carbonfiber_wardrobe.name,newname)
+        self.carbonfiber_wardrobe.name = newname
+        self.assertEqual(self.carbonfiber_wardrobe.name,newname)
 
-    def kick_wardrobe(self):
-        """Test kicking of the wardrobe."""
-        carbonfiber_wardrobe.kick()
-        self.assertEquals(carbonfiber_wardrobe.broken,True)
+    def test_illegal_material_throws_error(self):
+        """Test if illegal material throws error
+        """
+        with self.assertRaises(TypeError):
+            unknownmaterial_wardrobe = Wardrobe('my weird wardrobe','ik verzin zelf wel wat')
 
-    if __name__ == '__main__':
-           unittest.main(verbosity=3)
+    def test_kick_wardrobe(self):
+        """Test kicking of the wardrobe.
+        Test if glass breaks and the rest doesnt break"""
+        self.carbonfiber_wardrobe.kick()
+        self.glass_wardrobe.kick()
+        self.wooden_wardrobe.kick()
+        self.assertFalse(self.carbonfiber_wardrobe.broken)
+        self.assertFalse(self.wooden_wardrobe.broken)
+        self.assertTrue(self.glass_wardrobe.broken)
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
