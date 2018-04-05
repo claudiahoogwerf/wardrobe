@@ -1,4 +1,5 @@
 from enum import Enum
+from random import randint
 
 class Material(Enum):
         WOOD = 'Wood'
@@ -82,7 +83,7 @@ class Wardrobe():
         if self.broken:
             return "You already broke it dumbass! It's useless now"
 
-        if not self.closed == True:
+        if self.closed:
             return 'Door is already closed'
 
         self.closed = True
@@ -123,7 +124,6 @@ class Wardrobe():
 
 class Lion():
     def __init__(self,spoken_to=False):
-        #Course labels.
         self.spoken_to = spoken_to
 
     def __str__(self):
@@ -138,17 +138,24 @@ class Lion():
         self._spoken_to = spoken_to
 
 class Witch():
-    def __init__(self,name=''):
-        #Course labels.
-        self.name = name
+    def __init__(self,alive=True):
+        self.alive = alive
 
     def __str__(self):
-        return self._name
+        return self._alive
 
     @property
-    def name(self):
-        return self._name
+    def alive(self):
+        return self._alive
 
-    @name.setter
-    def name(self,name):
-        self._name = name
+    @alive.setter
+    def alive(self,alive):
+        self._alive = alive
+
+    def fight(self,visits):
+        randomint = randint(visits, 101)
+        if(randomint == 101):
+            self.alive = False
+            return 'I won! That was easy!'
+
+        return 'I lost and she is still alive :(. What the hell!'
